@@ -1,0 +1,37 @@
+INPUT ::= 
+    SHELL_COMMAND SEPARATOR INPUT
+
+SEPARATOR ::= 
+    ';'
+    NEW_LINE
+
+SHELL_COMMAND ::=
+    COMMAND
+    COMMAND '|' SHELL_COMMAND
+
+COMMAND ::=
+    WORD
+    WORD WS COMMAND
+    REDIRECTION COMMAND
+
+REDIRECTION ::=
+    REDIRECTION_OP WORD
+
+WORD ::=
+    BARE_WORD
+    VARIABLE
+    BRACKET_EXPANSION
+    STRING
+    BALANCED_TEXT
+
+BRACKET_EXPANSION ::=
+    '[' COMMAND ']'
+
+VARIABLE ::=
+    '$' BARE_WORD
+
+STRING ::=
+    ;; not gonna formally define that now
+
+BALANCED_TEXT ::=
+    '{' *magic* '}'
