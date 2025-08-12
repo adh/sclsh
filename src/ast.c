@@ -6,22 +6,22 @@
 #include <sclsh/ast.h>
 #include "value.h"
 
-SclshCommandLine* sclsh_value_as_command_line(SclshValue* value) {
+SclshNodeList* sclsh_value_as_command_line(SclshValue* value) {
     if (value && value->as_command_line) {
         return value->as_command_line;
     }
     return NULL;
 }
 
-void sclsh_command_line_free(SclshCommandLine* cmd_line) {
-    if (!cmd_line) {
+void sclsh_node_list_free(SclshNodeList* node_list) {
+    if (!node_list) {
         return;
     }
-    for (size_t i = 0; i < cmd_line->count; i++) {
-        SclshCommandWord* word = &cmd_line->words[i];
-        if (word->value) {
-            sclsh_value_unref(word->value);
+    for (size_t i = 0; i < node_list->count; i++) {
+        SclshNode* node = &node_list->nodes[i];
+        if (node->value) {
+            sclsh_value_unref(node->value);
         }
     }
-    free(cmd_line);
+    free(node_list);
 }

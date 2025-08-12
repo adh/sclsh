@@ -18,21 +18,22 @@ typedef enum {
     SCLSH_WORD_BRACE,
     SCLSH_WORD_BRACKET,
     SCLSH_WORD_VARIABLE,
-} SclshWordType;
+} SclshNodeType;
 
-typedef struct s_SclshCommandWord_s {
-    SclshWordType type;  // Type of the AST node
+typedef struct s_SclshNode_s {
+    SclshNodeType type;  // Type of the AST node
     SclshValue* value;  // Associated value (e.g., command, expression)
-} SclshCommandWord;
+} SclshNode;
 
-typedef struct SclshCommandLine_s {
+typedef struct s_SclshNodeList_s {
     size_t count;
-    SclshCommandWord words[];
-} SclshCommandLine;
+    SclshNode nodes[];
+} SclshNodeList;
 
-SclshCommandLine* sclsh_value_as_command_line(SclshValue* value);
+SclshNodeList* sclsh_value_as_command_line(SclshValue* value);
+SclshNodeList* sclsh_value_as_interpolation(SclshValue* value);
 
-void sclsh_command_line_free(SclshCommandLine* cmd_line);
+void sclsh_node_list_free(SclshNodeList* node_list);
 
 #ifdef __cplusplus
 }

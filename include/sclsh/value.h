@@ -19,8 +19,7 @@ typedef struct s_SclshValueList SclshValueList;
 
 
 SclshValue* sclsh_value_new(const char* string, 
-                            size_t length,
-                            void* data);
+                            size_t length);
 SclshValue* sclsh_value_ref(SclshValue* value);
 void sclsh_value_unref(SclshValue* value);
 

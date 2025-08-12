@@ -12,8 +12,7 @@
 
 
 SclshValue* sclsh_value_new(const char* string, 
-                            size_t length,
-                            void* data) {
+                            size_t length) {
     SclshValue* value = malloc(sizeof(SclshValue));
     if (!value) return NULL;
 
@@ -48,7 +47,10 @@ static void value_free(SclshValue* value) {
         sclsh_value_list_free(value->as_proc);
     }
     if (value->as_command_line) {
-        sclsh_command_line_free(value->as_command_line);
+        sclsh_node_list_free(value->as_command_line);
+    }
+    if (value->as_interpolation) {
+        sclsh_node_list_free(value->as_interpolation);
     }
     free(value);
 }
