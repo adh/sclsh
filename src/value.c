@@ -17,7 +17,6 @@ SclshValue* sclsh_value_new(const char* string,
     if (!value) return NULL;
 
     value->ref_count = 1;
-    value->is_error = false;
     assert(value->string = malloc(length + 1));
     strncpy(value->string, string, length);
     value->string[length] = '\0';

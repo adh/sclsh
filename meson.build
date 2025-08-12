@@ -7,6 +7,7 @@ libsclsh = library('sclsh',
     'src/parse.c',
     'src/ast.c',
     'src/value.c',
+    'src/io.c',
     include_directories : include_directories('include'),
     install : true,
 )
@@ -23,5 +24,6 @@ install_headers(
     'include/sclsh/util.h',
     'include/sclsh/value.h',
     'include/sclsh/ast.h',
+    'include/sclsh/io.h',
     subdir : 'sclsh'
 )
