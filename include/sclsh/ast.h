@@ -35,6 +35,19 @@ SclshNodeList* sclsh_value_as_interpolation(SclshValue* value);
 
 void sclsh_node_list_free(SclshNodeList* node_list);
 
+typedef struct SclshNodeListBuilder_s SclshNodeListBuilder;
+
+SclshNodeListBuilder* sclsh_node_list_builder_new(void);
+void sclsh_node_list_builder_free(SclshNodeListBuilder* builder);
+void sclsh_node_list_builder_append(
+    SclshNodeListBuilder* builder,
+    SclshValue* value,
+    SclshNodeType type
+);
+SclshNodeList* sclsh_node_list_builder_value(SclshNodeListBuilder* builder);
+
+char* sclsh_node_type_to_string(SclshNodeType type);
+
 #ifdef __cplusplus
 }
 #endif

@@ -7,33 +7,16 @@ extern "C" {
 
 #include <sclsh/value.h>
 #include <sclsh/ast.h>
+#include <sclsh/util.h>
 
 #include <stdio.h>
 
-typedef struct SclshParser_s SclshParser;
+SclshValueList* sclsh_parse_commands(SclshStringBuffer buffer);
+SclshValueList* sclsh_parse_list(SclshStringBuffer buffer);
+SclshNodeList* sclsh_parse_command_line(SclshStringBuffer buffer);
+SclshNodeList* sclsh_parse_interpolation(SclshStringBuffer buffer);
 
-typedef int (*SclshParserCommandHandler)(
-    SclshParser* parser,
-    SclshValue* command,
-    void* user_data
-);
-
-SclshParser* sclsh_parser_new(SclshValue* value);
-void sclsh_parser_free(SclshParser* parser);
-void sclsh_parser_set_command_handler(
-    SclshParser* parser, 
-    SclshParserCommandHandler command_handler,
-    void* user_data
-);
-
-int sclsh_parser_parse(SclshParser* parser, SclshValue* value);
-int sclsh_parser_parse_cstr(SclshParser* parser, const char* str);
-int sclsh_parser_parse_file(SclshParser* parser, FILE* file);
-int sclsh_parser_eof(SclshParser* parser);
-
-SclshValueList* sclsh_parse_list(SclshValue* value);
-SclshNodeList* sclsh_parse_command_line(SclshValue* value);
-SclshNodeList* sclsh_parse_interpolation(SclshValue* value);
+int sclsh_command_line_complete(SclshStringBuffer buffer);
 
 #ifdef __cplusplus
 }

@@ -1,6 +1,8 @@
 project('sclsh', 'c',
         default_options : ['c_std=c11'])
 
+libedit = dependency('libedit', required : true, include_type : 'system')
+
 libsclsh = library('sclsh',
     'src/sclsh.c',
     'src/util.c',
@@ -18,6 +20,7 @@ sclsh = executable('sclsh',
     'bin/sclsh.c',
     link_with : libsclsh,
     include_directories : include_directories('include'),
+    dependencies : [libedit],
     install : true,
 )
 

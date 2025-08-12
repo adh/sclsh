@@ -12,11 +12,14 @@ extern "C" {
 
 #include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
 
 typedef struct SclshStringBuffer_s {
     char* string;
     size_t length;
 } SclshStringBuffer;
+
+#define SCLSH_STRING_BUFFER(str) (SclshStringBuffer){ str, strlen(str) }
 
 extern uint32_t sclsh_fnv_hash(char* string);
 extern uint32_t sclsh_pointer_hash(void* pointer);

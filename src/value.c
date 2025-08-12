@@ -6,6 +6,7 @@
 #include <sclsh/value.h>
 #include <sclsh/ast.h>
 #include <sclsh/util.h>
+#include <sclsh/parse.h>
 #include "value.h"
 #include <stdlib.h>
 #include <string.h>
@@ -66,16 +67,30 @@ void sclsh_value_unref(SclshValue* value) {
 }
 
 SclshValueList* sclsh_value_as_list(SclshValue* value) {
-    if (value && value->as_list) {
-        return value->as_list;
+    if (!value) {
+        return NULL;
     }
-    return NULL;
-}
+    if (!value->as_list) {
+        value->as_list = sclsh_parse_list(sclsh_value_as_string(value));
+        if (!value->as_list) {
+            return NULL;  // Failed to parse as list
+        }
+
+    }
+    return value->as_list;
+}   
+
 SclshValueList* sclsh_value_as_proc(SclshValue* value) {
-    if (value && value->as_proc) {
-        return value->as_proc;
+    if (!value) {
+        return NULL;
     }
-    return NULL;
+    if (!value->as_proc) {
+        value->as_proc = sclsh_parse_commands(sclsh_value_as_string(value));
+        if (!value->as_proc) {
+            return NULL;  // Failed to parse as procedure
+        }
+    }
+    return value->as_proc;
 }
 SclshStringBuffer sclsh_value_as_string(SclshValue* value) {
     SclshStringBuffer buffer = { .string = NULL, .length = 0 };
