@@ -12,40 +12,22 @@ extern "C" {
 
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 typedef struct s_SclshValue SclshValue;
+typedef struct s_SclshValueList SclshValueList;
 
-typedef enum {
-    SCLSH_VALUE_TYPE_BYTES,
-    SCLSH_VALUE_TYPE_LIST,
-    SCLSH_VALUE_TYPE_AST_NODE,
-} SclshValueType;
 
-struct s_SclshValue {
-    long ref_count;  // Reference count for memory management
-    SclshValueType type;  // Type of the value (bytes or list)
-    
-    char* string;  // Pointer to the string data
-    size_t length;  // Length of the string
-
-    void* data;  // Pointer to additional data
-};
-
-SclshValue* sclsh_value_new(SclshValueType type, 
-                            const char* string, 
+SclshValue* sclsh_value_new(const char* string, 
                             size_t length,
                             void* data);
 SclshValue* sclsh_value_ref(SclshValue* value);
 void sclsh_value_unref(SclshValue* value);
 
-typedef void (*SclshOpaqueValueDestructor)(void* data);
+SclshValueList* sclsh_value_as_list(SclshValue* value);
+SclshValueList* sclsh_value_as_proc(SclshValue* value);
 
-typedef struct s_SclshListData {
-    size_t count;  // Number of items in the list
-    SclshValue* items[];  // Array of pointers to SclshValue
-} SclshListData;
-
-
+void sclsh_value_list_free(SclshValueList* list);
 
 #ifdef __cplusplus
 }
