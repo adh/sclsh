@@ -100,7 +100,7 @@ void sclsh_node_list_builder_append(
 }
 
 SclshNodeList* sclsh_node_list_builder_value(SclshNodeListBuilder* builder) {
-    SclshNodeList* list = malloc(sizeof(SclshNodeList) + sizeof(SclshNode) * (builder->count - 1));
+    SclshNodeList* list = malloc(sizeof(SclshNodeList) + sizeof(SclshNode) * (builder->count));
     if (!list) {
         return NULL;
     }
