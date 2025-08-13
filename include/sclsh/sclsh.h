@@ -34,7 +34,8 @@ SclshCommand* sclsh_get_command(SclshInterpreter* interp, const char* name);
 
 typedef SclshValue* (*SclshCommandFunc)(
     SclshContext* ctx, 
-    SclshValue** arguments, // NULL-terminated, owned by caller
+    size_t argc,
+    SclshValue** argv,
     void *user_data
 );
 typedef void (SclshUserDataDestructor)(void* user_data);

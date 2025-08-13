@@ -35,6 +35,22 @@ void sclsh_string_builder_append_buffer(SclshStringBuilder* sb, const SclshStrin
 SclshStringBuffer sclsh_string_builder_value(SclshStringBuilder* sb);
 
 typedef struct SclshHashMap_s SclshHashMap;
+typedef void (*SclshHashMapIteratorCallback)(
+    const char* key, 
+    void* value, 
+    void* user_data
+);
+
+SclshHashMap* sclsh_hash_map_new(void);
+void sclsh_hash_map_free(SclshHashMap* map);
+void sclsh_hash_map_set(SclshHashMap* map, const char* key, void* value);
+void* sclsh_hash_map_get(SclshHashMap* map, const char* key);
+void sclsh_hash_map_remove(SclshHashMap* map, const char* key);
+void sclsh_hash_map_for_each(
+    SclshHashMap* map, 
+    SclshHashMapIteratorCallback callback, 
+    void* user_data
+);
 
 #ifdef __cplusplus
 }
