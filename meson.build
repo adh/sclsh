@@ -11,6 +11,7 @@ libsclsh = library('sclsh',
     'src/value.c',
     'src/parse.c',
     'src/unwind.c',
+    'src/expr.c',
     include_directories : include_directories('include'),
     install : true,
 )
@@ -30,5 +31,6 @@ install_headers(
     'include/sclsh/ast.h',
     'include/sclsh/unwind.h',
     'include/sclsh/parse.h',
+    'include/sclsh/expr.h',
     subdir : 'sclsh'
 )
