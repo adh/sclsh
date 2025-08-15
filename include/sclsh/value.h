@@ -42,6 +42,8 @@ void sclsh_list_builder_append(SclshListBuilder* builder, SclshValue* value);
 SclshValueList* sclsh_list_builder_value_list(SclshListBuilder* builder);
 SclshValue* sclsh_list_builder_value(SclshListBuilder* builder);
 
+SclshValue* sclsh_value_new_from_list(SclshValue** items, size_t count);
+
 #ifdef __cplusplus
 }
 #endif

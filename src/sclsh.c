@@ -139,6 +139,23 @@ SclshValue* sclsh_context_get_variable(SclshContext* ctx, const char* name) {
     return (SclshValue*)sclsh_hash_map_get(ctx->variables, name);
 }
 
+static SclshValue* eval_node(
+    SclshContext* ctx, 
+    SclshNode* node
+) {
+    if (!ctx || !node || !node->value) {
+        return NULL;
+    }
+    if (node->type == SCLSH_WORD_VARIABLE) {
+        SclshStringBuffer str_buf = sclsh_value_as_string(node->value);
+        return sclsh_context_get_variable(ctx, str_buf.string);
+    } else if (node->type == SCLSH_WORD_BRACE) {
+        return sclsh_eval(ctx, node->value);  // Evaluate brace expressions
+    } else {
+        return node->value;
+    }
+}
+
 SclshValue* sclsh_eval(SclshContext* ctx, SclshValue* ast) {
     if (!ctx || !ast) {
         return NULL;
@@ -149,17 +166,27 @@ SclshValue* sclsh_eval(SclshContext* ctx, SclshValue* ast) {
         return NULL;  // Failed to parse as command line
     }
 
-    for (size_t i = 0; i < node_list->count; i++) {
-        SclshNode* node = &node_list->nodes[i];
-        fprintf(stderr, "# node %zu: type=%s, value=%p\n", i, sclsh_node_type_to_string(node->type), node->value);
-        SclshStringBuffer str_buf = sclsh_value_as_string(node->value);
-        if (str_buf.string) {
-            fprintf(stderr, "## length: %zu, string: %.*s\n", str_buf.length, (int)str_buf.length, str_buf.string);
-            free(str_buf.string);  // Free the string buffer after use
-        } else {
-            fprintf(stderr, "## length: 0, string: NULL\n");
-        }
+    if (node_list->count == 0) {
+        return sclsh_value_new("", 0);
     }
 
-    return sclsh_value_ref(ast);
+    char* cmd = sclsh_value_as_string(node_list->nodes[0].value).string;
+    SclshCommand* command = sclsh_get_command(ctx->interp, cmd);
+    if (!command) {
+        fprintf(stderr, "Command '%s' not found\n", cmd);
+        return NULL;  // Command not found
+    }
+
+    SclshValue** args = malloc(sizeof(SclshValue*) * (node_list->count - 1));
+    if (!args) {
+        fprintf(stderr, "Memory allocation failed for command arguments\n");
+        return NULL;  // Memory allocation failed
+    }
+    for (size_t i = 1; i < node_list->count; i++) {
+        args[i - 1] = eval_node(ctx, &node_list->nodes[i]);
+    }
+    SclshValue* result = command->func(ctx, node_list->count - 1, args, command->user_data);
+    free(args);  // Free the arguments array
+
+    return result;
 }

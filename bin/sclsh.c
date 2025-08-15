@@ -6,6 +6,7 @@
 #include <sclsh/sclsh.h>
 #include <sclsh/parse.h>
 #include <sclsh/util.h>
+#include <sclsh/commands.h>
 #include <stdio.h>
 #include <editline/readline.h>
 
@@ -15,6 +16,8 @@ int main(int argc, char* argv[]) {
         fprintf(stderr, "Failed to create interpreter\n");
         return 1;
     }
+
+    sclsh_register_core_commands(interp);
 
     SclshContext* ctx = sclsh_global_context(interp);
     if (!ctx) {

@@ -245,3 +245,32 @@ SclshValue* sclsh_list_builder_value(SclshListBuilder* builder) {
     return value;
 }
 
+SclshValue* sclsh_value_new_from_list(SclshValue** items, size_t count) {
+    if (!items || count == 0) {
+        return NULL;  // Invalid input
+    }
+
+    SclshValue* value = malloc(sizeof(SclshValue));
+    if (!value) return NULL;
+
+    value->ref_count = 1;
+    value->as_list = malloc(sizeof(SclshValueList) + sizeof(SclshValue*) * count);
+    if (!value->as_list) {
+        free(value);
+        return NULL;
+    }
+
+    value->as_list->count = count;
+    for (size_t i = 0; i < count; i++) {
+        value->as_list->items[i] = sclsh_value_ref(items[i]);
+    }
+
+    SclshStringBuffer buffer = value_list_to_string(value->as_list);
+    value->string = buffer.string;
+    value->length = buffer.length;
+    value->as_proc = NULL;
+    value->as_command_line = NULL;
+    value->as_interpolation = NULL;
+
+    return value;
+}

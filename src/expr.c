@@ -20,11 +20,15 @@ double sclsh_expr_eval_double(SclshContext* ctx, SclshValue* expr) {
     if (!list || list->count == 0) {
         return 0.0; // Empty or invalid expression
     }
-
     double result = value_to_double(ctx, list->items[0]);
     for (size_t i = 1; i < list->count; i += 2) {
         char* op = sclsh_value_as_string(list->items[i]).string;
+        if (i + 1 >= list->count) {
+            fprintf(stderr, "Invalid expression: missing operand after operator '%s'\n", op);
+            return 0.0; // Invalid expression
+        }
         double next_value = value_to_double(ctx, list->items[i + 1]);
+        puts(op);
         if (strcmp(op, "+") == 0) {
             result += next_value;
         } else if (strcmp(op, "-") == 0) {

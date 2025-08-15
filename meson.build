@@ -12,6 +12,7 @@ libsclsh = library('sclsh',
     'src/parse.c',
     'src/unwind.c',
     'src/expr.c',
+    'src/commands.c',
     include_directories : include_directories('include'),
     install : true,
 )
@@ -32,5 +33,6 @@ install_headers(
     'include/sclsh/unwind.h',
     'include/sclsh/parse.h',
     'include/sclsh/expr.h',
+    'include/sclsh/commands.h',
     subdir : 'sclsh'
 )
