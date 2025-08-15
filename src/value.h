@@ -1,6 +1,6 @@
 /* Copyright © 2025 Ales Hakl
  *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-License-Identifier: MIT
  */
 
  #ifndef H__SCLSH__INTERNAL_VALUE
